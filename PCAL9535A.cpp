@@ -32,7 +32,7 @@ void PCAL9535A::begin(void) {
  * Sets the pin mode to either INPUT or OUTPUT
  */
 void PCAL9535A::pinMode(uint8_t pin, uint8_t mode) {
-	updateRegisterBit(pin, (mode == INPUT ? 0 : 1), PCAL9535A_P0_CONFIG, PCAL9535A_P1_CONFIG);
+	updateRegisterBit(pin, (mode == INPUT ? 1 : 0), PCAL9535A_P0_CONFIG, PCAL9535A_P1_CONFIG);
 }
 
 /**
