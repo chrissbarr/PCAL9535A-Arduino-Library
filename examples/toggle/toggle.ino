@@ -4,7 +4,7 @@
 PCAL9535A gpio;
   
 void setup() {  
-  gpio.begin();
+  gpio.begin();      // use default address 0
   gpio.pinMode(0, OUTPUT);
 }
 
