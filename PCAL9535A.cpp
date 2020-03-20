@@ -12,7 +12,7 @@
  */
 void PCAL9535A::begin(uint8_t addr) {
 
-	i2caddr = constrain(addr, 0, 7);
+	_i2caddr = constrain(addr, 0, 7);
 
 	Wire.begin();
 
@@ -39,10 +39,10 @@ void PCAL9535A::pinMode(uint8_t pin, uint8_t mode) {
  * Read a single port, 0 or 1, and return its current 8 bit value.
  */
 uint8_t PCAL9535A::readGPIO(uint8_t port) {
-	Wire.beginTransmission(PCAL9535A_ADDRESS | i2caddr);
+	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
 	Wire.write(port == 0 ? PCAL9535A_P0_INPUT : PCAL9535A_P1_INPUT);
 	Wire.endTransmission();
-	Wire.requestFrom(PCAL9535A_ADDRESS | i2caddr, 1);
+	Wire.requestFrom(PCAL9535A_ADDRESS | _i2caddr, 1);
 	return Wire.read();
 }
 
@@ -54,11 +54,11 @@ uint16_t PCAL9535A::readGPIO16() {
 	uint8_t p0;
 
 	// read the current GPIO inputs
-	Wire.beginTransmission(PCAL9535A_ADDRESS | i2caddr);
+	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
 	Wire.write(PCAL9535A_P0_INPUT);
 	Wire.endTransmission();
 
-	Wire.requestFrom(PCAL9535A_ADDRESS | i2caddr, 2);
+	Wire.requestFrom(PCAL9535A_ADDRESS | _i2caddr, 2);
 	p0 = Wire.read();
 	val = Wire.read();
 	val <<= 8;
@@ -71,7 +71,7 @@ uint16_t PCAL9535A::readGPIO16() {
  * Write a single port.
  */
 void PCAL9535A::writeGPIO(uint8_t port, uint8_t val) {
-	Wire.beginTransmission(PCAL9535A_ADDRESS | i2caddr);
+	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
 	Wire.write(port == 0 ? PCAL9535A_P0_OUTPUT : PCAL9535A_P1_OUTPUT);
 	Wire.write(val);
 	Wire.endTransmission();
@@ -81,7 +81,7 @@ void PCAL9535A::writeGPIO(uint8_t port, uint8_t val) {
  * Writes all the pins in one go. 
  */
 void PCAL9535A::writeGPIO16(uint16_t val) {
-	Wire.beginTransmission(PCAL9535A_ADDRESS | i2caddr);
+	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
 	Wire.write(PCAL9535A_P0_OUTPUT);
 	Wire.write(val & 0xFF);
 	Wire.write(val >> 8);
@@ -209,10 +209,10 @@ uint8_t PCAL9535A::pinToReg(uint8_t pin, uint8_t port0addr, uint8_t port1addr) {
  */
 uint8_t PCAL9535A::readRegister(uint8_t addr) {
 	// read the current GPINTEN
-	Wire.beginTransmission(PCAL9535A_ADDRESS | i2caddr);
+	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
 	Wire.write(addr);
 	Wire.endTransmission();
-	Wire.requestFrom(PCAL9535A_ADDRESS | i2caddr, 1);
+	Wire.requestFrom(PCAL9535A_ADDRESS | _i2caddr, 1);
 	return Wire.read();
 }
 
@@ -221,7 +221,7 @@ uint8_t PCAL9535A::readRegister(uint8_t addr) {
  */
 void PCAL9535A::writeRegister(uint8_t regAddr, uint8_t regValue) {
 	// Write the register
-	Wire.beginTransmission(PCAL9535A_ADDRESS | i2caddr);
+	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
 	Wire.write(regAddr);
 	Wire.write(regValue);
 	Wire.endTransmission();
@@ -240,6 +240,5 @@ void PCAL9535A::updateRegisterBit(uint8_t pin, uint8_t pValue, uint8_t port0addr
 
 	// set the value for the particular bit
 	bitWrite(regValue, bit, pValue);
-
 	writeRegister(regAddr, regValue);
 }

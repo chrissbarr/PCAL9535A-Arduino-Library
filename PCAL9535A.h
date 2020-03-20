@@ -59,12 +59,10 @@ class PCAL9535A {
 public:
   void begin(uint8_t addr);
   void begin(void);
-
   void writeGPIO(uint8_t port, uint8_t);
   void writeGPIO16(uint16_t);
   uint16_t readGPIO16();
   uint8_t readGPIO(uint8_t port);
-
   void pinMode(uint8_t pin, uint8_t mode);
   void digitalWrite(uint8_t pin, uint8_t val);
   uint8_t digitalRead(uint8_t pin);
@@ -72,22 +70,18 @@ public:
   void pinSetDriveStrength(uint8_t pin, uint8_t str);
   void pinSetInputInversion(uint8_t pin, bool invert);
   void pinSetInputLatch(uint8_t pin, bool latch);
-
   void pinSetInterruptEnabled(uint8_t pin, bool enabled);
   uint8_t getLastInterruptPin();
   uint8_t getInterruptPinValue();
-
   void portSetOutputMode(uint8_t port, uint8_t mode);
 
  private:
-  uint8_t i2caddr;
+  uint8_t _i2caddr;
 
   uint8_t pinToBit(uint8_t pin);
   uint8_t pinToReg(uint8_t pin, uint8_t port0addr, uint8_t port1addr);
-
   uint8_t readRegister(uint8_t addr);
   void writeRegister(uint8_t addr, uint8_t value);
-
   void updateRegisterBit(uint8_t p, uint8_t pValue, uint8_t port0addr, uint8_t port1addr);
 
 };

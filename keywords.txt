@@ -12,6 +12,23 @@ PCAL9535A	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
+begin	KEYWORD2
+writeGPIO	KEYWORD2
+writeGPIO16	KEYWORD2
+readGPIO16	KEYWORD2
+readGPIO	KEYWORD2
+pinMode	KEYWORD2
+digitalWrite	KEYWORD2
+digitalRead	KEYWORD2
+pinSetPull	KEYWORD2
+pinSetDriveStrength	KEYWORD2
+pinSetInputInversion	KEYWORD2
+pinSetInputLatch	KEYWORD2
+pinSetInterruptEnabled	KEYWORD2
+getLastInterruptPin	KEYWORD2
+getInterruptPinValue	KEYWORD2
+portSetOutputMode	KEYWORD2
+
 #######################################
 # Constants (LITERAL1)
 #######################################
