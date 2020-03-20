@@ -20,7 +20,7 @@ void loop() {
 
 void printAllGPIO() {
 
-  int state = gpio[i].readGPIO16();  
+  int state = gpio.readGPIO16();  
   for (int i = 0; i < 16; i++) {
     bool b = state & (1 << 15);
     Serial.print(b);
