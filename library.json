@@ -1,0 +1,25 @@
+{
+    "name": "PCAL9535A Library",
+    "version": "1.0.0",
+    "description": "Library for the PCAL9535A I2C GPIO Expander.",
+    "keywords": "i2c, gpio, signal, pcal9535a, arduino",
+    "repository":
+    {
+      "type": "git",
+      "url": "https://github.com/chrissbarr/PCAL9535A-Arduino-Library.git"
+    },
+    "authors":
+    [
+      {
+        "name": "Chris Barr",
+        "email": "chris@chrisbarrbuilds.com",
+        "url": "https://www.chrisbarrbuilds.com",
+        "maintainer": true
+      }
+    ],
+    "license": "GPL-3.0-or-later",
+    "homepage": "https://github.com/chrissbarr/PCAL9535A-Arduino-Library",
+    "dependencies": {},
+    "frameworks": "arduino",
+    "platforms": "*"
+}
