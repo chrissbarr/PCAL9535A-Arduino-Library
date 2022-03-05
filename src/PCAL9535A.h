@@ -72,32 +72,161 @@ constexpr int PCAL9535A_INT_ERR = 255;
 
 class PCAL9535A {
 public:
+  /**
+   * Initializes the PCAL9535A given its HW address, see datasheet for address selection.
+   * /param addr Address of PCAL9535A (0 - 7)
+   */
   void begin(uint8_t addr);
-  void begin(void);
-  void writeGPIO(uint8_t port, uint8_t);
-  void writeGPIO16(uint16_t);
-  uint16_t readGPIO16();
-  uint8_t readGPIO(uint8_t port);
-  void pinMode(uint8_t pin, uint8_t mode);
-  void digitalWrite(uint8_t pin, uint8_t val);
-  uint8_t digitalRead(uint8_t pin);
-  void pinSetPull(uint8_t pin, PullSetting pull);
-  void pinSetDriveStrength(uint8_t pin, DriveStrength strength);
-  void pinSetInputInversion(uint8_t pin, bool invert);
-  void pinSetInputLatch(uint8_t pin, bool latch);
-  void pinSetInterruptEnabled(uint8_t pin, bool enabled);
-  uint8_t getLastInterruptPin();
-  uint8_t getInterruptPinValue();
-  void portSetOutputMode(uint8_t port, DriveMode mode);
+
+  /**
+   * Initializes the PCAL9535A at the default address (0)
+   */
+  void begin();
+
+  /**
+   * Writes an 8-bit value to the entire port given.
+   * \param port Port to write to (0 or 1)
+   * \param value Value to write to port
+   */
+  void writeGPIO(uint8_t port, uint8_t value);
   
+  /**
+   * Writes a 16-bit value to both ports.
+   * \param value Value to write
+   */
+  void writeGPIO16(uint16_t value);
+
+  /**
+   * Reads all 16 pins (port 0 and 1) into a single 16-bit variable.
+   * \return Variable containing all pin values as bits.
+   */
+  uint16_t readGPIO16();
+
+  /**
+   * Read a single port (0 or 1) and return its current 8 bit value.
+   * \param port Port to read (0 or 1)
+   * \return 8-bit value of port
+   */
+  uint8_t readGPIO(uint8_t port);
+
+  /**
+   * Sets the mode of a given pin to either INPUT or OUTPUT
+   * \param pin Pin to set (0 to 15)
+   * \param mode Mode to set to (INPUT or OUTPUT)
+   */
+  void pinMode(uint8_t pin, uint8_t mode);
+
+  /**
+   * Sets the given pin (if configured as an output) to be either HIGH or LOW
+   * \param pin Pin to set (0 to 15)
+   * \param value Value to set to (LOW or HIGH)
+   */
+  void digitalWrite(uint8_t pin, uint8_t value);
+
+  /**
+   * Reads the given pin (if configured as an input) and returns the value
+   * \param pin Pin to read (0 to 15)
+   * \return Value of pin (LOW or HIGH)
+   */
+  uint8_t digitalRead(uint8_t pin);
+
+  /**
+   * Set pull-up/pull-down behaviour of a given pin
+   * \param pin Pin to set behaviour for
+   * \param pull Pullup/pulldown setting to apply
+   */
+  void pinSetPull(uint8_t pin, PullSetting pull);
+
+  /**
+   * Set drive strength behaviour of a given pin
+   * \param pin Pin to set behaviour for
+   * \param strength Drive strength setting to apply
+   */
+  void pinSetDriveStrength(uint8_t pin, DriveStrength strength);
+
+  /**
+   * Set input-inversion behaviour of a given pin
+   * \param pin Pin to set behaviour for
+   * \param invert Inversion setting to apply (pin input is inverted if true)
+   */
+  void pinSetInputInversion(uint8_t pin, bool invert);
+
+  /**
+   * Set input latching behaviour of a given pin
+   * \param pin Pin to set behaviour for
+   * \param latch Latch setting to apply (pin input is latching if true)
+   */
+  void pinSetInputLatch(uint8_t pin, bool latch);
+
+  /**
+   * Set interrupts enabled/disabled for a given pin
+   * \param pin Pin to set behaviour for
+   * \param enabled Enable / disable interrupts
+   */
+  void pinSetInterruptEnabled(uint8_t pin, bool enabled);
+
+  /**
+   * Get the last pin to trigger an interrupt
+   * \return Pin which triggered interrupt
+   */
+  uint8_t getLastInterruptPin();
+
+  /**
+   * Get the value of the last pin to trigger an interrupt
+   * \return Value of pin which triggered interrupt
+   */
+  uint8_t getInterruptPinValue();
+
+  /**
+   * Configure the port drive mode (either push-pull or open-drain)
+   * \param port Port to apply the setting to
+   * \param mode Mode to set the port to
+   */
+  void portSetOutputMode(uint8_t port, DriveMode mode);
+
  private:
   uint8_t _i2caddr;
 
+  /**
+   * Convert a given pin (0 - 15) to a port bit number (0 - 7)
+   * \param pin Pin to convert to port bit number (0 - 15)
+   * \return Port bit number (0 - 7)
+   */
   uint8_t pinToBit(uint8_t pin) const;
+
+  /**
+   * Given a pin (0 - 15), select the register for the appropriate port
+   * \param pin Pin to base decision on
+   * \param port0 Register for Port0
+   * \param port1 Register for Port1
+   * \return Appropriate register (Port0 or Port1)
+   */
   RegisterAddress pinToReg(uint8_t pin, RegisterAddress port0, RegisterAddress port1) const;
+
+  /**
+   * Read a register with a given address
+   * \param register Address of register to read
+   * \return Value of register
+   */
   uint8_t readRegister(RegisterAddress register);
+
+  /**
+   * Write to a register with a given address
+   * \param register Address of register to write
+   * \param value Value to write to register
+   */
   void writeRegister(RegisterAddress register, uint8_t value);
-  void updateRegisterBit(uint8_t p, uint8_t pValue, RegisterAddress port0, RegisterAddress port1);
+
+  /**
+   * Helper to update a single bit of an A/B register.
+   * - Reads the current register value
+   * - Writes the new register value
+   * \param pin Pin for which the value shall be set
+   * \param value Value to write (1 or 0)
+   * \param port0 Register to write to if pin is in port0
+   * \param port1 Register to write to if pin is in port1
+   */
+  void updateRegisterBit(uint8_t pin, uint8_t value, RegisterAddress port0, RegisterAddress port1);
 
 };
 
