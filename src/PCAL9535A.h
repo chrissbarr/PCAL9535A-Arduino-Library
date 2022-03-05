@@ -7,7 +7,7 @@
 #ifndef _PCAL9535A_H_
 #define _PCAL9535A_H_
 
-#include <Wire.h>
+#include <stdint.h>
 
 namespace PCAL9535A {
 

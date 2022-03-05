@@ -6,6 +6,7 @@
 
 #include "PCAL9535A.h"
 #include <Arduino.h>
+#include <Wire.h>
 
 namespace PCAL9535A {
 
