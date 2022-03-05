@@ -88,8 +88,8 @@ public:
   void pinSetInterruptEnabled(uint8_t pin, bool enabled);
   uint8_t getLastInterruptPin();
   uint8_t getInterruptPinValue();
-
   void portSetOutputMode(uint8_t port, DriveMode mode);
+  
  private:
   uint8_t _i2caddr;
 
