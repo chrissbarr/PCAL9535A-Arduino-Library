@@ -51,9 +51,11 @@ constexpr int PCAL9535A_PULLSEL_PULLUP    = 0x01;
 constexpr int PCAL9535A_OUTPUT_CONF_PP    = 0x00;
 constexpr int PCAL9535A_OUTPUT_CONF_OD    = 0x01;
 
-constexpr int PULL_NONE = 0;
-constexpr int PULL_UP   = 1;
-constexpr int PULL_DOWN = 2;
+enum class PULL_TYPE {
+  NONE,
+  UP,
+  DOWN
+};
 
 constexpr int PCAL9535A_INT_ERR = 255;
 
@@ -68,7 +70,7 @@ public:
   void pinMode(uint8_t pin, uint8_t mode);
   void digitalWrite(uint8_t pin, uint8_t val);
   uint8_t digitalRead(uint8_t pin);
-  void pinSetPull(uint8_t pin, uint8_t pull);
+  void pinSetPull(uint8_t pin, PULL_TYPE pull);
   void pinSetDriveStrength(uint8_t pin, uint8_t str);
   void pinSetInputInversion(uint8_t pin, bool invert);
   void pinSetInputLatch(uint8_t pin, bool latch);

@@ -114,9 +114,9 @@ uint8_t PCAL9535A::digitalRead(uint8_t pin) {
 /**
  * Set the pull-up/down resistor for a given pin
  */
-void PCAL9535A::pinSetPull(uint8_t pin, uint8_t pull) {
-	updateRegisterBit(pin, ((pull == PULL_NONE) ? PCAL9535A_PULLENA_DISABLED : PCAL9535A_PULLENA_ENABLED), PCAL9535A_P0_PULLENA, PCAL9535A_P1_PULLENA);
-	updateRegisterBit(pin, ((pull == PULL_UP) ? PCAL9535A_PULLSEL_PULLUP : PCAL9535A_PULLSEL_PULLDOWN), PCAL9535A_P0_PULLSEL, PCAL9535A_P1_PULLSEL);	
+void PCAL9535A::pinSetPull(uint8_t pin, PULL_TYPE pull) {
+	updateRegisterBit(pin, ((pull == PULL_TYPE::NONE) ? PCAL9535A_PULLENA_DISABLED : PCAL9535A_PULLENA_ENABLED), PCAL9535A_P0_PULLENA, PCAL9535A_P1_PULLENA);
+	updateRegisterBit(pin, ((pull == PULL_TYPE::UP) ? PCAL9535A_PULLSEL_PULLUP : PCAL9535A_PULLSEL_PULLDOWN), PCAL9535A_P0_PULLSEL, PCAL9535A_P1_PULLSEL);	
 }
 
 /**
