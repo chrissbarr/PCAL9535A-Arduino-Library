@@ -10,9 +10,6 @@
 
 namespace PCAL9535A {
 
-/**
- * Initializes the PCAL9535A given its HW address, see datasheet for address selection.
- */
 void PCAL9535A::begin(uint8_t addr) {
 
 	_i2caddr = constrain(addr, 0, 7);
@@ -24,23 +21,14 @@ void PCAL9535A::begin(uint8_t addr) {
 	writeRegister(RegisterAddress::P1_CONFIG, 0xff);
 }
 
-/**
- * Initializes the PCAL9535A with 000 for the configurable part of the address
- */
-void PCAL9535A::begin(void) {
+void PCAL9535A::begin() {
 	begin(0);
 }
 
-/**
- * Sets the pin mode to either INPUT or OUTPUT
- */
 void PCAL9535A::pinMode(uint8_t pin, uint8_t mode) {
 	updateRegisterBit(pin, (mode == INPUT ? 1 : 0), RegisterAddress::P0_CONFIG, RegisterAddress::P1_CONFIG);
 }
 
-/**
- * Read a single port, 0 or 1, and return its current 8 bit value.
- */
 uint8_t PCAL9535A::readGPIO(uint8_t port) {
 	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
 	Wire.write(port == 0 ? RegisterAddress::P0_INPUT : RegisterAddress::P1_INPUT);
@@ -49,9 +37,6 @@ uint8_t PCAL9535A::readGPIO(uint8_t port) {
 	return Wire.read();
 }
 
-/**
- * Reads all 16 pins (port 0 and 1) into a single 16-bit variable.
- */
 uint16_t PCAL9535A::readGPIO16() {
 	uint16_t val = 0;
 	uint8_t p0;
@@ -70,9 +55,6 @@ uint16_t PCAL9535A::readGPIO16() {
 	return val;
 }
 
-/**
- * Write a single port.
- */
 void PCAL9535A::writeGPIO(uint8_t port, uint8_t val) {
 	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
 	Wire.write(port == 0 ? RegisterAddress::P0_OUTPUT : RegisterAddress::P1_OUTPUT);
@@ -80,9 +62,6 @@ void PCAL9535A::writeGPIO(uint8_t port, uint8_t val) {
 	Wire.endTransmission();
 }
 
-/**
- * Writes all the pins in one go. 
- */
 void PCAL9535A::writeGPIO16(uint16_t val) {
 	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
 	Wire.write(RegisterAddress::P0_OUTPUT);
@@ -109,17 +88,12 @@ uint8_t PCAL9535A::digitalRead(uint8_t pin) {
 	return (readRegister(regAddr) >> pinToBit(pin)) & 0x1;
 }
 
-/**
- * Set the pull-up/down resistor for a given pin
- */
+
 void PCAL9535A::pinSetPull(uint8_t pin, PullSetting pull) {
 	updateRegisterBit(pin, ((pull == PullSetting::NONE) ? RegisterValues_PULLENA::DISABLED : RegisterValues_PULLENA::ENABLED), RegisterAddress::P0_PULLENA, RegisterAddress::P1_PULLENA);
 	updateRegisterBit(pin, ((pull == PullSetting::UP) ? RegisterValues_PULLSEL::PULLUP : RegisterValues_PULLSEL::PULLDOWN), RegisterAddress::P0_PULLSEL, RegisterAddress::P1_PULLSEL);	
 }
 
-/**
- * Sets the output pin drive strength
- */
 void PCAL9535A::pinSetDriveStrength(uint8_t pin, DriveStrength strength) {
 	RegisterAddress regAddr;
 	uint8_t regValue;
@@ -138,23 +112,14 @@ void PCAL9535A::pinSetDriveStrength(uint8_t pin, DriveStrength strength) {
 	writeRegister(regAddr, regValue);
 }
 
-/**
- * Sets the input pin polarity inversion
- */
 void PCAL9535A::pinSetInputInversion(uint8_t pin, bool invert) {
 	updateRegisterBit(pin, (invert ? 1 : 0), RegisterAddress::P0_POLINV, RegisterAddress::P1_POLINV);
 }
 
-/**
- * Sets the input pin polarity inversion
- */
 void PCAL9535A::pinSetInputLatch(uint8_t pin, bool latch) {
 	updateRegisterBit(pin, (latch ? 1 : 0), RegisterAddress::P0_ILATCH, RegisterAddress::P1_ILATCH);
 }
 
-/**
- * Enable / disable interrupts for a given pin.
- */
 void PCAL9535A::pinSetInterruptEnabled(uint8_t pin, bool enabled) {
 	updateRegisterBit(pin, (enabled ? 1 : 0), RegisterAddress::P0_INTMASK, RegisterAddress::P1_INTMASK);
 }
@@ -195,23 +160,14 @@ void PCAL9535A::portSetOutputMode(uint8_t port, DriveMode mode) {
 	writeRegister(RegisterAddress::OUTPUT_CONF, regValue);
 }
 
-/**
- * Convert a given pin (0 - 15) to a port bit number (0 - 7)
- */
 uint8_t PCAL9535A::pinToBit(uint8_t pin) const {
 	return pin % 8;
 }
 
-/**
- * Select the register for port 0 or port 1 depending on the given pin
- */
 RegisterAddress PCAL9535A::pinToReg(uint8_t pin, RegisterAddress port0, RegisterAddress port1) const {
 	return (pin < 8) ? port0 : port1;
 }
 
-/**
- * Reads a given register
- */
 uint8_t PCAL9535A::readRegister(RegisterAddress reg) {
 	// read the current GPINTEN
 	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
@@ -221,9 +177,6 @@ uint8_t PCAL9535A::readRegister(RegisterAddress reg) {
 	return Wire.read();
 }
 
-/**
- * Writes a given register
- */
 void PCAL9535A::writeRegister(RegisterAddress reg, uint8_t regValue) {
 	// Write the register
 	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
@@ -232,11 +185,7 @@ void PCAL9535A::writeRegister(RegisterAddress reg, uint8_t regValue) {
 	Wire.endTransmission();
 }
 
-/**
- * Helper to update a single bit of an A/B register.
- * - Reads the current register value
- * - Writes the new register value
- */
+
 void PCAL9535A::updateRegisterBit(uint8_t pin, uint8_t pValue, RegisterAddress port0, RegisterAddress port1) {
 	const RegisterAddress regAddr = pinToReg(pin, port0, port1);
 	uint8_t regValue = readRegister(regAddr);
