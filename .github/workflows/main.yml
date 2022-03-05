@@ -9,7 +9,12 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        example: [examples/button, examples/readall, examples/toggle]
+        example: [
+          examples/button, 
+          examples/drivestrength,
+          examples/readall, 
+          examples/toggle
+          ]
 
     steps:
     - uses: actions/checkout@v2
