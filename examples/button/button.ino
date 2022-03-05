@@ -2,13 +2,13 @@
 #include <Wire.h>
 #include "PCAL9535A.h"
 
-PCAL9535A gpio;
+PCAL9535A::PCAL9535A gpio;
   
 void setup() {  
   gpio.begin();      // use default address 0
 
   gpio.pinMode(0, INPUT);
-  gpio.pinSetPull(0, PULL_UP);  // turn on the internal pullup
+  gpio.pinSetPull(0, PCAL9535A::PullSetting::UP);  // turn on the internal pullup
 
   pinMode(13, OUTPUT);  // use the p13 LED
 }
