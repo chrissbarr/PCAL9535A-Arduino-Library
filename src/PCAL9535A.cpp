@@ -92,24 +92,21 @@ void PCAL9535A::writeGPIO16(uint16_t val) {
 }
 
 void PCAL9535A::digitalWrite(uint8_t pin, uint8_t val) {
-	uint8_t gpio;
-	uint8_t bit = pinToBit(pin);
-	RegisterAddress regAddr = pinToReg(pin, RegisterAddress::P0_OUTPUT, RegisterAddress::P1_OUTPUT);
+	const RegisterAddress regAddr = pinToReg(pin, RegisterAddress::P0_OUTPUT, RegisterAddress::P1_OUTPUT);
 
 	// read the current GPIO state, so we can modify only this one pin
-	gpio = readRegister(regAddr);
+	uint8_t gpio = readRegister(regAddr);
 
 	// update the GPIO state with the pin we wish to set
-	bitWrite(gpio, bit, val);
+	bitWrite(gpio, pinToBit(pin), val);
 
 	// write the new GPIO state back out
 	writeRegister(regAddr, gpio);
 }
 
 uint8_t PCAL9535A::digitalRead(uint8_t pin) {
-	uint8_t bit = pinToBit(pin);
-	RegisterAddress regAddr = pinToReg(pin, RegisterAddress::P0_INPUT, RegisterAddress::P1_INPUT);
-	return (readRegister(regAddr) >> bit) & 0x1;
+	const RegisterAddress regAddr = pinToReg(pin, RegisterAddress::P0_INPUT, RegisterAddress::P1_INPUT);
+	return (readRegister(regAddr) >> pinToBit(pin)) & 0x1;
 }
 
 /**
@@ -159,7 +156,6 @@ void PCAL9535A::pinSetInputLatch(uint8_t pin, bool latch) {
  * Enable / disable interrupts for a given pin.
  */
 void PCAL9535A::pinSetInterruptEnabled(uint8_t pin, bool enabled) {
-
 	updateRegisterBit(pin, (enabled ? 1 : 0), RegisterAddress::P0_INTMASK, RegisterAddress::P1_INTMASK);
 }
 
@@ -167,13 +163,20 @@ uint8_t PCAL9535A::getLastInterruptPin() {
 	uint8_t intf;
 
 	intf = readRegister(RegisterAddress::P0_INTSTAT);
-	for(int i = 0; i < 8; i++) if (bitRead(intf, i)) return i;
+	for(int i = 0; i < 8; i++) {
+		if (bitRead(intf, i)) {
+			return i;
+		}
+	}
 
 	intf = readRegister(RegisterAddress::P1_INTSTAT);
-	for(int i = 0; i < 8; i++) if (bitRead(intf, i)) return i + 8;
+	for(int i = 0; i < 8; i++) {
+		if (bitRead(intf, i)) {
+			return i + 8;
+		}
+	}
 
 	return PCAL9535A_INT_ERR;
-
 }
 
 uint8_t PCAL9535A::getInterruptPinValue() {
@@ -187,10 +190,9 @@ uint8_t PCAL9535A::getInterruptPinValue() {
 }
 
 void PCAL9535A::portSetOutputMode(uint8_t port, uint8_t mode) {
-	RegisterAddress regAddr = RegisterAddress::OUTPUT_CONF;
-	uint8_t regValue = readRegister(regAddr);
+	uint8_t regValue = readRegister(RegisterAddress::OUTPUT_CONF);
 	bitWrite(regValue, (port == 0 ? 0 : 1), (mode & 0x01));
-	writeRegister(regAddr, regValue);
+	writeRegister(RegisterAddress::OUTPUT_CONF, regValue);
 }
 
 /**
@@ -236,13 +238,11 @@ void PCAL9535A::writeRegister(RegisterAddress reg, uint8_t regValue) {
  * - Writes the new register value
  */
 void PCAL9535A::updateRegisterBit(uint8_t pin, uint8_t pValue, RegisterAddress port0, RegisterAddress port1) {
-	uint8_t regValue;
-	RegisterAddress regAddr = pinToReg(pin, port0, port1);
-	uint8_t bit = pinToBit(pin);
-	regValue = readRegister(regAddr);
+	const RegisterAddress regAddr = pinToReg(pin, port0, port1);
+	uint8_t regValue = readRegister(regAddr);
 
 	// set the value for the particular bit
-	bitWrite(regValue, bit, pValue);
+	bitWrite(regValue, pinToBit(pin), pValue);
 	writeRegister(regAddr, regValue);
 }
 
