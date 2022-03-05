@@ -9,6 +9,8 @@
 
 #include <Wire.h>
 
+namespace PCAL9535A {
+
 #define PCAL9535A_ADDRESS 0x20
 
 // registers
@@ -86,5 +88,6 @@ public:
 
 };
 
+} // namespace PCAL9535A
 
 #endif

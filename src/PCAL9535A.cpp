@@ -7,6 +7,8 @@
 #include "PCAL9535A.h"
 #include <Arduino.h>
 
+namespace PCAL9535A {
+
 /**
  * Initializes the PCAL9535A given its HW address, see datasheet for address selection.
  */
@@ -242,3 +244,5 @@ void PCAL9535A::updateRegisterBit(uint8_t pin, uint8_t pValue, uint8_t port0addr
 	bitWrite(regValue, bit, pValue);
 	writeRegister(regAddr, regValue);
 }
+
+} // namespace PCAL9535A
