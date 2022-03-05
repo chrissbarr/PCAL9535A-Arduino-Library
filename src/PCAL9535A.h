@@ -13,8 +13,19 @@ namespace PCAL9535A {
 
 constexpr int PCAL9535A_ADDRESS = 0x20;
 
+enum class HardwareAddress : uint8_t {
+  A000 = 0x00,
+  A001 = 0x01,
+  A010 = 0x02,
+  A011 = 0x03,
+  A100 = 0x04,
+  A101 = 0x05,
+  A110 = 0x06,
+  A111 = 0x07
+};
+
 // registers
-enum RegisterAddress : uint8_t {
+enum class RegisterAddress : uint8_t {
   P0_INPUT    = 0x00,
   P0_OUTPUT   = 0x02,
   P0_POLINV   = 0x04,
@@ -40,24 +51,24 @@ enum RegisterAddress : uint8_t {
   OUTPUT_CONF = 0x4F
 };
 
-enum DriveStrength : uint8_t  {
+enum class DriveStrength : uint8_t  {
   P25 = 0x00,
   P50 = 0x01,
   P75 = 0x10,
   P100 = 0x11
 };
 
-enum RegisterValues_PULLENA : uint8_t  {
+enum class RegisterValues_PULLENA : uint8_t  {
   DISABLED = 0x00,
   ENABLED = 0x01
 };
 
-enum RegisterValues_PULLSEL : uint8_t  {
+enum class RegisterValues_PULLSEL : uint8_t  {
   PULLDOWN = 0x00,
   PULLUP = 0x01
 };
 
-enum DriveMode : uint8_t  {
+enum class DriveMode : uint8_t  {
   PUSHPULL = 0x00,
   OPENDRAIN = 0x01
 };
@@ -76,7 +87,7 @@ public:
    * Initializes the PCAL9535A given its HW address, see datasheet for address selection.
    * /param addr Address of PCAL9535A (0 - 7)
    */
-  void begin(uint8_t addr);
+  void begin(HardwareAddress addr);
 
   /**
    * Initializes the PCAL9535A at the default address (0)

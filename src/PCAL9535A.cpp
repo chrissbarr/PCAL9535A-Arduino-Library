@@ -10,9 +10,9 @@
 
 namespace PCAL9535A {
 
-void PCAL9535A::begin(uint8_t addr) {
+void PCAL9535A::begin(HardwareAddress addr) {
 
-	_i2caddr = constrain(addr, 0, 7);
+	_i2caddr = static_cast<uint8_t>(addr);
 
 	Wire.begin();
 
@@ -22,7 +22,7 @@ void PCAL9535A::begin(uint8_t addr) {
 }
 
 void PCAL9535A::begin() {
-	begin(0);
+	begin(HardwareAddress::A000);
 }
 
 void PCAL9535A::pinMode(uint8_t pin, uint8_t mode) {
@@ -31,7 +31,7 @@ void PCAL9535A::pinMode(uint8_t pin, uint8_t mode) {
 
 uint8_t PCAL9535A::readGPIO(uint8_t port) {
 	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
-	Wire.write(port == 0 ? RegisterAddress::P0_INPUT : RegisterAddress::P1_INPUT);
+	Wire.write(static_cast<uint8_t>(port == 0 ? RegisterAddress::P0_INPUT : RegisterAddress::P1_INPUT));
 	Wire.endTransmission();
 	Wire.requestFrom(PCAL9535A_ADDRESS | _i2caddr, 1);
 	return Wire.read();
@@ -43,7 +43,7 @@ uint16_t PCAL9535A::readGPIO16() {
 
 	// read the current GPIO inputs
 	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
-	Wire.write(RegisterAddress::P0_INPUT);
+	Wire.write(static_cast<uint8_t>(RegisterAddress::P0_INPUT));
 	Wire.endTransmission();
 
 	Wire.requestFrom(PCAL9535A_ADDRESS | _i2caddr, 2);
@@ -57,14 +57,14 @@ uint16_t PCAL9535A::readGPIO16() {
 
 void PCAL9535A::writeGPIO(uint8_t port, uint8_t val) {
 	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
-	Wire.write(port == 0 ? RegisterAddress::P0_OUTPUT : RegisterAddress::P1_OUTPUT);
+	Wire.write(static_cast<uint8_t>(port == 0 ? RegisterAddress::P0_OUTPUT : RegisterAddress::P1_OUTPUT));
 	Wire.write(val);
 	Wire.endTransmission();
 }
 
 void PCAL9535A::writeGPIO16(uint16_t val) {
 	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
-	Wire.write(RegisterAddress::P0_OUTPUT);
+	Wire.write(static_cast<uint8_t>(RegisterAddress::P0_OUTPUT));
 	Wire.write(val & 0xFF);
 	Wire.write(val >> 8);
 	Wire.endTransmission();
@@ -90,8 +90,8 @@ uint8_t PCAL9535A::digitalRead(uint8_t pin) {
 
 
 void PCAL9535A::pinSetPull(uint8_t pin, PullSetting pull) {
-	updateRegisterBit(pin, ((pull == PullSetting::NONE) ? RegisterValues_PULLENA::DISABLED : RegisterValues_PULLENA::ENABLED), RegisterAddress::P0_PULLENA, RegisterAddress::P1_PULLENA);
-	updateRegisterBit(pin, ((pull == PullSetting::UP) ? RegisterValues_PULLSEL::PULLUP : RegisterValues_PULLSEL::PULLDOWN), RegisterAddress::P0_PULLSEL, RegisterAddress::P1_PULLSEL);	
+	updateRegisterBit(pin, static_cast<uint8_t>((pull == PullSetting::NONE) ? RegisterValues_PULLENA::DISABLED : RegisterValues_PULLENA::ENABLED), RegisterAddress::P0_PULLENA, RegisterAddress::P1_PULLENA);
+	updateRegisterBit(pin, static_cast<uint8_t>((pull == PullSetting::UP) ? RegisterValues_PULLSEL::PULLUP : RegisterValues_PULLSEL::PULLDOWN), RegisterAddress::P0_PULLSEL, RegisterAddress::P1_PULLSEL);	
 }
 
 void PCAL9535A::pinSetDriveStrength(uint8_t pin, DriveStrength strength) {
@@ -107,7 +107,7 @@ void PCAL9535A::pinSetDriveStrength(uint8_t pin, DriveStrength strength) {
 	}
 
  	regValue = readRegister(regAddr);
- 	regValue |= (strength & 0x03) << ((pin % 4) * 2);
+ 	regValue |= (static_cast<uint8_t>(strength) & 0x03) << ((pin % 4) * 2);
 
 	writeRegister(regAddr, regValue);
 }
@@ -156,7 +156,7 @@ uint8_t PCAL9535A::getInterruptPinValue() {
 
 void PCAL9535A::portSetOutputMode(uint8_t port, DriveMode mode) {
 	uint8_t regValue = readRegister(RegisterAddress::OUTPUT_CONF);
-	bitWrite(regValue, (port == 0 ? 0 : 1), (mode & 0x01));
+	bitWrite(regValue, (port == 0 ? 0 : 1), (static_cast<uint8_t>(mode) & 0x01));
 	writeRegister(RegisterAddress::OUTPUT_CONF, regValue);
 }
 
@@ -171,7 +171,7 @@ RegisterAddress PCAL9535A::pinToReg(uint8_t pin, RegisterAddress port0, Register
 uint8_t PCAL9535A::readRegister(RegisterAddress reg) {
 	// read the current GPINTEN
 	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
-	Wire.write(reg);
+	Wire.write(static_cast<uint8_t>(reg));
 	Wire.endTransmission();
 	Wire.requestFrom(PCAL9535A_ADDRESS | _i2caddr, 1);
 	return Wire.read();
@@ -180,7 +180,7 @@ uint8_t PCAL9535A::readRegister(RegisterAddress reg) {
 void PCAL9535A::writeRegister(RegisterAddress reg, uint8_t regValue) {
 	// Write the register
 	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
-	Wire.write(reg);
+	Wire.write(static_cast<uint8_t>(reg));
 	Wire.write(regValue);
 	Wire.endTransmission();
 }
