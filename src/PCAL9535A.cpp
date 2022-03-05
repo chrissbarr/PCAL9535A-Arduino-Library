@@ -195,14 +195,14 @@ void PCAL9535A::portSetOutputMode(uint8_t port, uint8_t mode) {
 /**
  * Convert a given pin (0 - 15) to a port bit number (0 - 7)
  */
-uint8_t PCAL9535A::pinToBit(uint8_t pin) {
+uint8_t PCAL9535A::pinToBit(uint8_t pin) const {
 	return pin % 8;
 }
 
 /**
  * Select the register for port 0 or port 1 depending on the given pin
  */
-uint8_t PCAL9535A::pinToReg(uint8_t pin, uint8_t port0addr, uint8_t port1addr) {
+uint8_t PCAL9535A::pinToReg(uint8_t pin, uint8_t port0addr, uint8_t port1addr) const {
 	return (pin < 8) ? port0addr : port1addr;
 }
 
