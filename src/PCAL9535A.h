@@ -14,7 +14,7 @@ namespace PCAL9535A {
 constexpr int PCAL9535A_ADDRESS = 0x20;
 
 // registers
-enum RegisterAddress {
+enum RegisterAddress : uint8_t {
   P0_INPUT    = 0x00,
   P0_OUTPUT   = 0x02,
   P0_POLINV   = 0x04,
@@ -40,29 +40,29 @@ enum RegisterAddress {
   OUTPUT_CONF = 0x4F
 };
 
-enum RegisterValues_DRVSTR {
+enum RegisterValues_DRVSTR : uint8_t  {
   _25 = 0x00,
   _50 = 0x01,
   _75 = 0x10,
   _100 = 0x11
 };
 
-enum RegisterValues_PULLENA {
+enum RegisterValues_PULLENA : uint8_t  {
   DISABLED = 0x00,
   ENABLED = 0x01
 };
 
-enum RegisterValues_PULLSEL {
+enum RegisterValues_PULLSEL : uint8_t  {
   PULLDOWN = 0x00,
   PULLUP = 0x01
 };
 
-enum RegisterValues_OUTPUTCONF {
+enum RegisterValues_OUTPUTCONF : uint8_t  {
   PUSHPULL = 0x00,
   OPENDRAIN = 0x01
 };
 
-enum class PullSetting {
+enum class PullSetting : uint8_t  {
   NONE,
   UP,
   DOWN
