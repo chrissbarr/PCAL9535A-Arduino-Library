@@ -1,6 +1,6 @@
 {
     "name": "PCAL9535A Library",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Library for the PCAL9535A I2C GPIO Expander.",
     "keywords": "i2c, gpio, signal, pcal9535a, arduino",
     "repository":
