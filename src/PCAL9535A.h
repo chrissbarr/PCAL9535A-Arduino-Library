@@ -40,11 +40,11 @@ enum RegisterAddress : uint8_t {
   OUTPUT_CONF = 0x4F
 };
 
-enum RegisterValues_DRVSTR : uint8_t  {
-  _25 = 0x00,
-  _50 = 0x01,
-  _75 = 0x10,
-  _100 = 0x11
+enum DriveStrength : uint8_t  {
+  P25 = 0x00,
+  P50 = 0x01,
+  P75 = 0x10,
+  P100 = 0x11
 };
 
 enum RegisterValues_PULLENA : uint8_t  {
@@ -82,7 +82,7 @@ public:
   void digitalWrite(uint8_t pin, uint8_t val);
   uint8_t digitalRead(uint8_t pin);
   void pinSetPull(uint8_t pin, PullSetting pull);
-  void pinSetDriveStrength(uint8_t pin, uint8_t str);
+  void pinSetDriveStrength(uint8_t pin, DriveStrength strength);
   void pinSetInputInversion(uint8_t pin, bool invert);
   void pinSetInputLatch(uint8_t pin, bool latch);
   void pinSetInterruptEnabled(uint8_t pin, bool enabled);

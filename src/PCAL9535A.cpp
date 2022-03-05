@@ -120,7 +120,7 @@ void PCAL9535A::pinSetPull(uint8_t pin, PullSetting pull) {
 /**
  * Sets the output pin drive strength
  */
-void PCAL9535A::pinSetDriveStrength(uint8_t pin, uint8_t str) {
+void PCAL9535A::pinSetDriveStrength(uint8_t pin, DriveStrength strength) {
 	RegisterAddress regAddr;
 	uint8_t regValue;
 
@@ -133,7 +133,7 @@ void PCAL9535A::pinSetDriveStrength(uint8_t pin, uint8_t str) {
 	}
 
  	regValue = readRegister(regAddr);
- 	regValue |= (str & 0x03) << ((pin % 4) * 2);
+ 	regValue |= (strength & 0x03) << ((pin % 4) * 2);
 
 	writeRegister(regAddr, regValue);
 }
