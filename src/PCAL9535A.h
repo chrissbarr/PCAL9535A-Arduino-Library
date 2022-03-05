@@ -79,6 +79,11 @@ enum class PullSetting : uint8_t  {
   DOWN
 };
 
+enum class Port : uint8_t {
+  P0 = 0x00,
+  P1 = 0x01
+};
+
 constexpr int PCAL9535A_INT_ERR = 255;
 
 class PCAL9535A {
@@ -99,7 +104,7 @@ public:
    * \param port Port to write to (0 or 1)
    * \param value Value to write to port
    */
-  void writeGPIO(uint8_t port, uint8_t value);
+  void writeGPIO(Port port, uint8_t value);
   
   /**
    * Writes a 16-bit value to both ports.
@@ -118,7 +123,7 @@ public:
    * \param port Port to read (0 or 1)
    * \return 8-bit value of port
    */
-  uint8_t readGPIO(uint8_t port);
+  uint8_t readGPIO(Port port);
 
   /**
    * Sets the mode of a given pin to either INPUT or OUTPUT
@@ -193,7 +198,7 @@ public:
    * \param port Port to apply the setting to
    * \param mode Mode to set the port to
    */
-  void portSetOutputMode(uint8_t port, DriveMode mode);
+  void portSetOutputMode(Port port, DriveMode mode);
 
  private:
   uint8_t _i2caddr;

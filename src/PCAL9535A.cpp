@@ -29,9 +29,9 @@ void PCAL9535A::pinMode(uint8_t pin, uint8_t mode) {
 	updateRegisterBit(pin, (mode == INPUT ? 1 : 0), RegisterAddress::P0_CONFIG, RegisterAddress::P1_CONFIG);
 }
 
-uint8_t PCAL9535A::readGPIO(uint8_t port) {
+uint8_t PCAL9535A::readGPIO(Port port) {
 	Wire.beginTransmission(_i2caddr);
-	Wire.write(static_cast<uint8_t>(port == 0 ? RegisterAddress::P0_INPUT : RegisterAddress::P1_INPUT));
+	Wire.write(static_cast<uint8_t>(port == Port::P0 ? RegisterAddress::P0_INPUT : RegisterAddress::P1_INPUT));
 	Wire.endTransmission();
 	Wire.requestFrom(_i2caddr, uint8_t(1));
 	return Wire.read();
@@ -55,9 +55,9 @@ uint16_t PCAL9535A::readGPIO16() {
 	return val;
 }
 
-void PCAL9535A::writeGPIO(uint8_t port, uint8_t val) {
+void PCAL9535A::writeGPIO(Port port, uint8_t val) {
 	Wire.beginTransmission(_i2caddr);
-	Wire.write(static_cast<uint8_t>(port == 0 ? RegisterAddress::P0_OUTPUT : RegisterAddress::P1_OUTPUT));
+	Wire.write(static_cast<uint8_t>(port == Port::P0 ? RegisterAddress::P0_OUTPUT : RegisterAddress::P1_OUTPUT));
 	Wire.write(val);
 	Wire.endTransmission();
 }
@@ -154,9 +154,9 @@ uint8_t PCAL9535A::getInterruptPinValue() {
 	return PCAL9535A_INT_ERR;
 }
 
-void PCAL9535A::portSetOutputMode(uint8_t port, DriveMode mode) {
+void PCAL9535A::portSetOutputMode(Port port, DriveMode mode) {
 	uint8_t regValue = readRegister(RegisterAddress::OUTPUT_CONF);
-	bitWrite(regValue, (port == 0 ? 0 : 1), (static_cast<uint8_t>(mode) & 0x01));
+	bitWrite(regValue, (port == Port::P0 ? 0 : 1), (static_cast<uint8_t>(mode) & 0x01));
 	writeRegister(RegisterAddress::OUTPUT_CONF, regValue);
 }
 
