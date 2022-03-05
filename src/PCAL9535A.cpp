@@ -12,7 +12,7 @@ namespace PCAL9535A {
 
 void PCAL9535A::begin(HardwareAddress addr) {
 
-	_i2caddr = static_cast<uint8_t>(addr);
+	_i2caddr = PCAL9535A_ADDRESS | static_cast<uint8_t>(addr);
 
 	Wire.begin();
 
@@ -30,10 +30,10 @@ void PCAL9535A::pinMode(uint8_t pin, uint8_t mode) {
 }
 
 uint8_t PCAL9535A::readGPIO(uint8_t port) {
-	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
+	Wire.beginTransmission(_i2caddr);
 	Wire.write(static_cast<uint8_t>(port == 0 ? RegisterAddress::P0_INPUT : RegisterAddress::P1_INPUT));
 	Wire.endTransmission();
-	Wire.requestFrom(PCAL9535A_ADDRESS | _i2caddr, 1);
+	Wire.requestFrom(_i2caddr, uint8_t(1));
 	return Wire.read();
 }
 
@@ -42,11 +42,11 @@ uint16_t PCAL9535A::readGPIO16() {
 	uint8_t p0;
 
 	// read the current GPIO inputs
-	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
+	Wire.beginTransmission(_i2caddr);
 	Wire.write(static_cast<uint8_t>(RegisterAddress::P0_INPUT));
 	Wire.endTransmission();
 
-	Wire.requestFrom(PCAL9535A_ADDRESS | _i2caddr, 2);
+	Wire.requestFrom(_i2caddr, uint8_t(2));
 	p0 = Wire.read();
 	val = Wire.read();
 	val <<= 8;
@@ -56,14 +56,14 @@ uint16_t PCAL9535A::readGPIO16() {
 }
 
 void PCAL9535A::writeGPIO(uint8_t port, uint8_t val) {
-	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
+	Wire.beginTransmission(_i2caddr);
 	Wire.write(static_cast<uint8_t>(port == 0 ? RegisterAddress::P0_OUTPUT : RegisterAddress::P1_OUTPUT));
 	Wire.write(val);
 	Wire.endTransmission();
 }
 
 void PCAL9535A::writeGPIO16(uint16_t val) {
-	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
+	Wire.beginTransmission(_i2caddr);
 	Wire.write(static_cast<uint8_t>(RegisterAddress::P0_OUTPUT));
 	Wire.write(val & 0xFF);
 	Wire.write(val >> 8);
@@ -170,21 +170,20 @@ RegisterAddress PCAL9535A::pinToReg(uint8_t pin, RegisterAddress port0, Register
 
 uint8_t PCAL9535A::readRegister(RegisterAddress reg) {
 	// read the current GPINTEN
-	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
+	Wire.beginTransmission(_i2caddr);
 	Wire.write(static_cast<uint8_t>(reg));
 	Wire.endTransmission();
-	Wire.requestFrom(PCAL9535A_ADDRESS | _i2caddr, 1);
+	Wire.requestFrom(_i2caddr, uint8_t(1));
 	return Wire.read();
 }
 
 void PCAL9535A::writeRegister(RegisterAddress reg, uint8_t regValue) {
 	// Write the register
-	Wire.beginTransmission(PCAL9535A_ADDRESS | _i2caddr);
+	Wire.beginTransmission(_i2caddr);
 	Wire.write(static_cast<uint8_t>(reg));
 	Wire.write(regValue);
 	Wire.endTransmission();
 }
-
 
 void PCAL9535A::updateRegisterBit(uint8_t pin, uint8_t pValue, RegisterAddress port0, RegisterAddress port1) {
 	const RegisterAddress regAddr = pinToReg(pin, port0, port1);
