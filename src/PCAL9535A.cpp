@@ -189,7 +189,7 @@ uint8_t PCAL9535A::getInterruptPinValue() {
 	return PCAL9535A_INT_ERR;
 }
 
-void PCAL9535A::portSetOutputMode(uint8_t port, uint8_t mode) {
+void PCAL9535A::portSetOutputMode(uint8_t port, DriveMode mode) {
 	uint8_t regValue = readRegister(RegisterAddress::OUTPUT_CONF);
 	bitWrite(regValue, (port == 0 ? 0 : 1), (mode & 0x01));
 	writeRegister(RegisterAddress::OUTPUT_CONF, regValue);
