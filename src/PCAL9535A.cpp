@@ -5,7 +5,7 @@
  ****************************************************/
 
 #include "PCAL9535A.h"
-#include "Arduino.h"
+#include <Arduino.h>
 
 /**
  * Initializes the PCAL9535A given its HW address, see datasheet for address selection.
