@@ -9,8 +9,8 @@ constexpr int port1testpin = 8;
   
 void setup() {  
   gpio.begin();
-  gpio.portSetOutputMode(0, PCAL9535A::DriveMode::OPENDRAIN);
-  gpio.portSetOutputMode(1, PCAL9535A::DriveMode::PUSHPULL);
+  gpio.portSetOutputMode(PCAL9535A::Port::P0, PCAL9535A::DriveMode::OPENDRAIN);
+  gpio.portSetOutputMode(PCAL9535A::Port::P1, PCAL9535A::DriveMode::PUSHPULL);
   gpio.pinMode(port0testpin, OUTPUT);
   gpio.pinMode(port1testpin, OUTPUT);
 }
