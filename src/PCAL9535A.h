@@ -57,7 +57,7 @@ enum RegisterValues_PULLSEL : uint8_t  {
   PULLUP = 0x01
 };
 
-enum RegisterValues_OUTPUTCONF : uint8_t  {
+enum DriveMode : uint8_t  {
   PUSHPULL = 0x00,
   OPENDRAIN = 0x01
 };
@@ -88,8 +88,8 @@ public:
   void pinSetInterruptEnabled(uint8_t pin, bool enabled);
   uint8_t getLastInterruptPin();
   uint8_t getInterruptPinValue();
-  void portSetOutputMode(uint8_t port, uint8_t mode);
 
+  void portSetOutputMode(uint8_t port, DriveMode mode);
  private:
   uint8_t _i2caddr;
 
