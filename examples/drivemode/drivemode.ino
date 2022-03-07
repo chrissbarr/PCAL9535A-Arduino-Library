@@ -2,7 +2,7 @@
 #include <Wire.h>
 #include "PCAL9535A.h"
 
-PCAL9535A::PCAL9535A gpio;
+PCAL9535A::PCAL9535A<TwoWire> gpio(Wire);
 
 constexpr int port0testpin = 0;
 constexpr int port1testpin = 8;

@@ -5,18 +5,26 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        example: [
-          examples/button, 
-          examples/drivemode,
-          examples/drivestrength,
-          examples/readall, 
-          examples/toggle
-          ]
-
+        include:
+          - example: examples/button
+            boards: "--board=uno --board=teensy31 --board=due"
+          - example: examples/drivemode
+            boards: "--board=uno --board=teensy31 --board=due"
+          - example: examples/drivestrength
+            boards: "--board=uno --board=teensy31 --board=due"
+          - example: examples/readall
+            boards: "--board=uno --board=teensy31 --board=due"
+          - example: examples/softi2c-acewire
+            lib-deps: "bxparks/AceWire @ 0.4.1"
+            boards: "--board=uno --board=teensy31 --board=due"
+          - example: examples/softi2c-softwarewire
+            lib-deps: "testato/SoftwareWire@1.6.0"
+            boards: "--board=uno"
+          - example: examples/toggle
+            boards: "--board=uno --board=teensy31 --board=due"
     steps:
     - uses: actions/checkout@v2
     - name: Cache pip
@@ -41,6 +49,8 @@ jobs:
         pip install --upgrade platformio
 
     - name: Run PlatformIO
-      run: pio ci --lib="." --board=uno --board=teensy31 --board=due
+      run: pio ci --lib="." $BOARDS --project-option="lib_deps=$LIB_DEPS"
       env:
         PLATFORMIO_CI_SRC: ${{ matrix.example }}
+        BOARDS: ${{ matrix.boards }}
+        LIB_DEPS: ${{ matrix.lib-deps }}
