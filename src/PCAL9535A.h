@@ -60,13 +60,13 @@ enum class DriveStrength : uint8_t  {
 };
 
 enum class RegisterValues_PULLENA : uint8_t  {
-  DISABLED = 0x00,
-  ENABLED = 0x01
+  PULL_DISABLED = 0x00,
+  PULL_ENABLED = 0x01
 };
 
 enum class RegisterValues_PULLSEL : uint8_t  {
-  PULLDOWN = 0x00,
-  PULLUP = 0x01
+  PULL_PULLDOWN = 0x00,
+  PULL_PULLUP = 0x01
 };
 
 enum class DriveMode : uint8_t  {
@@ -225,8 +225,8 @@ public:
    */
   void pinSetPull(uint8_t pin, PullSetting pull)
   {
-    updateRegisterBit(pin, static_cast<uint8_t>((pull == PullSetting::NONE) ? RegisterValues_PULLENA::DISABLED : RegisterValues_PULLENA::ENABLED), RegisterAddress::P0_PULLENA, RegisterAddress::P1_PULLENA);
-    updateRegisterBit(pin, static_cast<uint8_t>((pull == PullSetting::UP) ? RegisterValues_PULLSEL::PULLUP : RegisterValues_PULLSEL::PULLDOWN), RegisterAddress::P0_PULLSEL, RegisterAddress::P1_PULLSEL);	
+    updateRegisterBit(pin, static_cast<uint8_t>((pull == PullSetting::NONE) ? RegisterValues_PULLENA::PULL_DISABLED : RegisterValues_PULLENA::PULL_ENABLED), RegisterAddress::P0_PULLENA, RegisterAddress::P1_PULLENA);
+    updateRegisterBit(pin, static_cast<uint8_t>((pull == PullSetting::UP) ? RegisterValues_PULLSEL::PULL_PULLUP : RegisterValues_PULLSEL::PULL_PULLDOWN), RegisterAddress::P0_PULLSEL, RegisterAddress::P1_PULLSEL);	
   }
 
   /**
