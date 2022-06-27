@@ -28,6 +28,9 @@ jobs:
           - example: examples/softi2c-softwarewire
             lib-deps: "testato/SoftwareWire@1.6.0"
             boards: "--board=uno"
+          - example: examples/teensy-multiple-i2c
+            lib-deps: "https://github.com/Richard-Gemmell/teensy4_i2c.git#4977ebb4b29408bd591956c855b026bde2a25596"
+            boards: "--board=teensy41"
           - example: examples/toggle
             boards: "--board=uno --board=teensy31 --board=due"
     steps:
