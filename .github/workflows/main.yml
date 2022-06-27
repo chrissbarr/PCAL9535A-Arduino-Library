@@ -13,23 +13,23 @@ jobs:
       matrix:
         include:
           - example: examples/button
-            boards: "--board=uno --board=teensy31 --board=due"
+            boards: "--board=uno --board=teensy31 --board=due --board=esp32dev"
           - example: examples/drivemode
-            boards: "--board=uno --board=teensy31 --board=due"
+            boards: "--board=uno --board=teensy31 --board=due --board=esp32dev"
           - example: examples/drivestrength
-            boards: "--board=uno --board=teensy31 --board=due"
+            boards: "--board=uno --board=teensy31 --board=due --board=esp32dev"
           - example: examples/multiple
-            boards: "--board=uno --board=teensy31 --board=due"
+            boards: "--board=uno --board=teensy31 --board=due --board=esp32dev"
           - example: examples/readall
-            boards: "--board=uno --board=teensy31 --board=due"
+            boards: "--board=uno --board=teensy31 --board=due --board=esp32dev"
           - example: examples/softi2c-acewire
             lib-deps: "bxparks/AceWire @ 0.4.1"
-            boards: "--board=uno --board=teensy31 --board=due"
+            boards: "--board=uno --board=teensy31 --board=due --board=esp32dev"
           - example: examples/softi2c-softwarewire
             lib-deps: "testato/SoftwareWire@1.6.0"
             boards: "--board=uno"
           - example: examples/toggle
-            boards: "--board=uno --board=teensy31 --board=due"
+            boards: "--board=uno --board=teensy31 --board=due --board=esp32dev"
     steps:
     - uses: actions/checkout@v2
     - name: Cache pip
