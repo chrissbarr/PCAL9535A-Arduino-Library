@@ -3,8 +3,8 @@
 #include "PCAL9535A.h"
 
 PCAL9535A::PCAL9535A<TwoWire> gpio(Wire);
-  
-void setup() {  
+
+void setup() {
   gpio.begin();      // use default address 0
 
   gpio.pinMode(0, INPUT);

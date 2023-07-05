@@ -5,8 +5,8 @@
 PCAL9535A::PCAL9535A<TwoWire> gpio(Wire);
 
 constexpr int testpin = 1;
-  
-void setup() {  
+
+void setup() {
   gpio.begin();      // use default address 0
   gpio.pinMode(testpin, OUTPUT);
 }
@@ -34,6 +34,6 @@ void loop() {
   gpio.digitalWrite(testpin, HIGH);
   delay(25);
   gpio.digitalWrite(testpin, LOW);
-  
+
   delay(1000);
 }

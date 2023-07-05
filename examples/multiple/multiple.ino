@@ -6,8 +6,8 @@ PCAL9535A::PCAL9535A<TwoWire> gpio1(Wire);
 PCAL9535A::PCAL9535A<TwoWire> gpio2(Wire);
 PCAL9535A::PCAL9535A<TwoWire> gpio3(Wire);
 PCAL9535A::PCAL9535A<TwoWire> gpio4(Wire);
-  
-void setup() {  
+
+void setup() {
   gpio1.begin(PCAL9535A::HardwareAddress::A000);  // 0x20 - Pins = 000
   gpio2.begin(PCAL9535A::HardwareAddress::A001);  // 0x21 - Pins = 001
   gpio3.begin(PCAL9535A::HardwareAddress::A010);  // 0x22 - Pins = 010

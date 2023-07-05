@@ -5,8 +5,8 @@
 /**
  * This example uses the multiple I2C interfaces on the Teensy 4.1 board.
  * Uses the teensy4_i2c library here:
- * https://github.com/Richard-Gemmell/teensy4_i2c 
- * 
+ * https://github.com/Richard-Gemmell/teensy4_i2c
+ *
  * (I2C peripherals are exposed as Wire, Wire1, and Wire2)
  */
 
@@ -15,7 +15,7 @@ PCAL9535A::PCAL9535A<TwoWire> gpio2(Wire1);
 PCAL9535A::PCAL9535A<TwoWire> gpio3(Wire2);
 
 void printAllGPIO(PCAL9535A::PCAL9535A<TwoWire>& gpio) {
-  int state = gpio.readGPIO16();  
+  int state = gpio.readGPIO16();
   for (int i = 0; i < 16; i++) {
     bool b = state & (1 << 15);
     Serial.print(b);
@@ -23,8 +23,8 @@ void printAllGPIO(PCAL9535A::PCAL9535A<TwoWire>& gpio) {
   }
   Serial.println();
 }
-  
-void setup() {  
+
+void setup() {
   gpio1.begin(PCAL9535A::HardwareAddress::A000);  // 0x20 - Pins = 000
   gpio2.begin(PCAL9535A::HardwareAddress::A000);
   gpio3.begin(PCAL9535A::HardwareAddress::A000);
