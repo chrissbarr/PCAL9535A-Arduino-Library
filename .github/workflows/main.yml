@@ -48,7 +48,7 @@ jobs:
       run: pip install --upgrade platformio
 
     - name: Run PlatformIO
-      run: pio ci --lib="." $BOARDS --project-option="lib_deps=$LIB_DEPS"
+      run: pio ci --lib="." $BOARDS --project-option="lib_deps=$LIB_DEPS" --project-option="build_flags = -Wall"
       env:
         PLATFORMIO_CI_SRC: ${{ matrix.example }}
         BOARDS: ${{ matrix.boards }}
