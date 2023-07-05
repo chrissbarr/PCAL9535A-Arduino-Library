@@ -8,7 +8,6 @@
 #define _PCAL9535A_H_
 
 #include <stdint.h>
-#include <Arduino.h>
 
 namespace PCAL9535A {
 
