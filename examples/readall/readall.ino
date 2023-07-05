@@ -3,8 +3,8 @@
 #include "PCAL9535A.h"
 
 PCAL9535A::PCAL9535A<TwoWire> gpio(Wire);
-  
-void setup() {  
+
+void setup() {
   Serial.begin(250000);
   Serial.println("Starting...");
 
@@ -13,15 +13,13 @@ void setup() {
 }
 
 void loop() {
-
-  printAllGPIO();  
+  printAllGPIO();
   delay(500);
-
 }
 
 void printAllGPIO() {
 
-  int state = gpio.readGPIO16();  
+  int state = gpio.readGPIO16();
   for (int i = 0; i < 16; i++) {
     bool b = state & (1 << 15);
     Serial.print(b);

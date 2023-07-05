@@ -8,8 +8,8 @@ constexpr int PIN_SCL = 2;
 SoftwareWire softwareWire(PIN_SDA, PIN_SCL);
 
 PCAL9535A::PCAL9535A<SoftwareWire> gpio(softwareWire);
-  
-void setup() {  
+
+void setup() {
   gpio.begin();      // use default address 0
   gpio.pinMode(0, OUTPUT);
 }

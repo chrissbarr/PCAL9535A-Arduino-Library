@@ -1,4 +1,4 @@
-/*************************************************** 
+/***************************************************
  This is a library for the PCAL9535A I2C GPIO expander.
 
  Written by Chris Barr, 2019.
@@ -126,7 +126,7 @@ public:
     mWire.write(value);
     mWire.endTransmission();
   }
-  
+
   /**
    * Writes a 16-bit value to both ports.
    * \param value Value to write
@@ -225,7 +225,7 @@ public:
   void pinSetPull(uint8_t pin, PullSetting pull)
   {
     updateRegisterBit(pin, static_cast<uint8_t>((pull == PullSetting::NONE) ? RegisterValues_PULLENA::PULL_DISABLED : RegisterValues_PULLENA::PULL_ENABLED), RegisterAddress::P0_PULLENA, RegisterAddress::P1_PULLENA);
-    updateRegisterBit(pin, static_cast<uint8_t>((pull == PullSetting::UP) ? RegisterValues_PULLSEL::PULL_PULLUP : RegisterValues_PULLSEL::PULL_PULLDOWN), RegisterAddress::P0_PULLSEL, RegisterAddress::P1_PULLSEL);	
+    updateRegisterBit(pin, static_cast<uint8_t>((pull == PullSetting::UP) ? RegisterValues_PULLSEL::PULL_PULLUP : RegisterValues_PULLSEL::PULL_PULLDOWN), RegisterAddress::P0_PULLSEL, RegisterAddress::P1_PULLSEL);
   }
 
   /**
@@ -405,7 +405,7 @@ public:
 
     // set the value for the particular bit
     bitWrite(regValue, pinToBit(pin), value);
-   
+
     writeRegister(regAddr, regValue);
   }
 

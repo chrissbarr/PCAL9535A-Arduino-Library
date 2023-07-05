@@ -6,8 +6,8 @@ PCAL9535A::PCAL9535A<TwoWire> gpio(Wire);
 
 constexpr int port0testpin = 0;
 constexpr int port1testpin = 8;
-  
-void setup() {  
+
+void setup() {
   gpio.begin();
   gpio.portSetOutputMode(PCAL9535A::Port::P0, PCAL9535A::DriveMode::OPENDRAIN);
   gpio.portSetOutputMode(PCAL9535A::Port::P1, PCAL9535A::DriveMode::PUSHPULL);
