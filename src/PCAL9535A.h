@@ -9,6 +9,13 @@
 
 #include <stdint.h>
 
+// These macros from the Arduino core are defined here and undefined at the end of the header
+// to allow use of these macros within this header without them leaking externally.
+#define pca_bitRead(value, bit) (((value) >> (bit)) & 0x01)
+#define pca_bitSet(value, bit) ((value) |= (1UL << (bit)))
+#define pca_bitClear(value, bit) ((value) &= ~(1UL << (bit)))
+#define pca_bitWrite(value, bit, bitvalue) (bitvalue ? pca_bitSet(value, bit) : pca_bitClear(value, bit))
+
 namespace PCAL9535A {
 
 constexpr int PCAL9535A_ADDRESS = 0x20;
@@ -184,7 +191,7 @@ public:
    */
   void pinMode(uint8_t pin, uint8_t mode)
   {
-    updateRegisterBit(pin, (mode == INPUT ? 1 : 0), RegisterAddress::P0_CONFIG, RegisterAddress::P1_CONFIG);
+    updateRegisterBit(pin, (mode == 0 ? 1 : 0), RegisterAddress::P0_CONFIG, RegisterAddress::P1_CONFIG);
   }
 
   /**
@@ -200,7 +207,7 @@ public:
     uint8_t gpio = readRegister(regAddr);
 
     // update the GPIO state with the pin we wish to set
-    bitWrite(gpio, pinToBit(pin), value);
+    pca_bitWrite(gpio, pinToBit(pin), value);
 
     // write the new GPIO state back out
     writeRegister(regAddr, gpio);
@@ -292,14 +299,14 @@ public:
 
     intf = readRegister(RegisterAddress::P0_INTSTAT);
     for(int i = 0; i < 8; i++) {
-      if (bitRead(intf, i)) {
+      if (pca_bitRead(intf, i)) {
         return i;
       }
     }
 
     intf = readRegister(RegisterAddress::P1_INTSTAT);
     for(int i = 0; i < 8; i++) {
-      if (bitRead(intf, i)) {
+      if (pca_bitRead(intf, i)) {
         return i + 8;
       }
     }
@@ -330,7 +337,7 @@ public:
   void portSetOutputMode(Port port, DriveMode mode)
   {
     uint8_t regValue = readRegister(RegisterAddress::OUTPUT_CONF);
-    bitWrite(regValue, (port == Port::P0 ? 0 : 1), (static_cast<uint8_t>(mode) & 0x01));
+    pca_bitWrite(regValue, (port == Port::P0 ? 0 : 1), (static_cast<uint8_t>(mode) & 0x01));
     writeRegister(RegisterAddress::OUTPUT_CONF, regValue);
   }
 
@@ -404,7 +411,7 @@ public:
     uint8_t regValue = readRegister(regAddr);
 
     // set the value for the particular bit
-    bitWrite(regValue, pinToBit(pin), value);
+    pca_bitWrite(regValue, pinToBit(pin), value);
 
     writeRegister(regAddr, regValue);
   }
@@ -412,5 +419,10 @@ public:
 };
 
 } // namespace PCAL9535A
+
+#undef pca_bitRead
+#undef pca_bitSet
+#undef pca_bitClear
+#undef pca_bitWrite
 
 #endif
