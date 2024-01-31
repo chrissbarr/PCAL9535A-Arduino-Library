@@ -286,7 +286,7 @@ public:
    */
   void pinSetInterruptEnabled(uint8_t pin, bool enabled)
   {
-    updateRegisterBit(pin, (enabled ? 1 : 0), RegisterAddress::P0_INTMASK, RegisterAddress::P1_INTMASK);
+    updateRegisterBit(pin, (enabled ? 0 : 1), RegisterAddress::P0_INTMASK, RegisterAddress::P1_INTMASK);
   }
 
   /**
