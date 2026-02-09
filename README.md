@@ -1,8 +1,26 @@
 # PCAL9535A Arduino Library
-This is an Arduino library for the PCAL9535A I2C GPIO Expander IC. It should be compatible with:
-- PCA9535
-- PCA9535A
-- PCAL9535A
+This is an Arduino library for the PCAL9535A I2C GPIO Expander IC. It is also compatible with a range of other ICs that share in the common register set (see Compatibility below).
+
+## Compatibility
+
+The register set in the PCAL9535A is common to a range of I2C GPIO expanders from both TI and NXP (and probably others).
+
+The base feature set is described by the PCA9535. The more advanced variants (PCAL) include more configuration of the IO. The library is compatible with both, but note the more basic parts do not support all features.
+
+The PCAL9535A has the most full feature set (that I am aware of) so this library targets that part.
+
+The following table shows several parts known to work with this library. The feature set of these parts is summarised:
+
+| Part | Bits | Addresses | Input | Output | Interrupt | Polarity Inv | Prg. Drive Strength | Latchable Inputs | Pull-Up/Down | Output Mode |
+|------|------|-----------|-------|--------|-----------|--------------|---------------------|------------------|--------------|-------------|
+| PCA9535 | 16 | 8 (0x20 - 0x27) | Yes | Yes | Yes | Yes | No | No | None | Push-Pull |
+| PCA9535A | 16 | 8 (0x20 - 0x27) | Yes | Yes | Yes | Yes | No | No | None | Push-Pull |
+| PCA9535C | 16 | 8 (0x20 - 0x27) | Yes | Yes | Yes | Yes | No | No | None | Open-Drain |
+| PCAL9535A | 16 | 8 (0x20 - 0x27) | Yes | Yes | Yes (maskable) | Yes | Yes | Yes | Programmable | Open-Drain / Push-Pull |
+| PCA6416A | 16 | 2 (0x20 - 0x21) | Yes | Yes | Yes | Yes | No | No | None | Push-Pull |
+| PCAL6416A | 16 | 2 (0x20 - 0x21) | Yes | Yes | Yes (maskable) | Yes | Yes | Yes | Programmable | Open-Drain / Push-Pull |
+
+Note that other GPIO expanders not listed may be compatible. If you find a non-listed part that is compatible, let me know!
 
 ## Key Features
 - 2 x 8-bit ports of GPIO (16 pins total).
