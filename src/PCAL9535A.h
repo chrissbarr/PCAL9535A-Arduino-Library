@@ -59,10 +59,10 @@ enum class RegisterAddress : uint8_t {
 };
 
 enum class DriveStrength : uint8_t  {
-  P25 = 0x00,
-  P50 = 0x01,
-  P75 = 0x10,
-  P100 = 0x11
+  P25 = 0b00,
+  P50 = 0b01,
+  P75 = 0b10,
+  P100 = 0b11
 };
 
 enum class RegisterValues_PULLENA : uint8_t  {
@@ -254,6 +254,7 @@ public:
     }
 
     regValue = readRegister(regAddr);
+    regValue &= ~(0x03 << ((pin % 4) * 2));
     regValue |= (static_cast<uint8_t>(strength) & 0x03) << ((pin % 4) * 2);
 
     writeRegister(regAddr, regValue);
