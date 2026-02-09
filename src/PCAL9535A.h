@@ -100,7 +100,7 @@ public:
   explicit PCAL9535A(WIRE& wire) : mWire(wire) {}
   /**
    * Initializes the PCAL9535A given its HW address, see datasheet for address selection.
-   * /param addr Address of PCAL9535A (0 - 7)
+   * \param addr Address of PCAL9535A (0 - 7)
    */
   void begin(HardwareAddress addr)
   {
@@ -375,7 +375,7 @@ public:
    */
   uint8_t readRegister(RegisterAddress reg)
   {
-    // read the current GPINTEN
+    // read the register
     mWire.beginTransmission(_i2caddr);
     mWire.write(static_cast<uint8_t>(reg));
     mWire.endTransmission();
