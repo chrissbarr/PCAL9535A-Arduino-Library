@@ -9,13 +9,6 @@
 
 #include <stdint.h>
 
-// These macros from the Arduino core are defined here and undefined at the end of the header
-// to allow use of these macros within this header without them leaking externally.
-#define pca_bitRead(value, bit) (((value) >> (bit)) & 0x01)
-#define pca_bitSet(value, bit) ((value) |= (1UL << (bit)))
-#define pca_bitClear(value, bit) ((value) &= ~(1UL << (bit)))
-#define pca_bitWrite(value, bit, bitvalue) (bitvalue ? pca_bitSet(value, bit) : pca_bitClear(value, bit))
-
 namespace PCAL9535A {
 
 constexpr int PCAL9535A_ADDRESS = 0x20;
@@ -195,7 +188,7 @@ template <typename WIRE> class PCAL9535A {
     uint8_t gpio = readRegister(regAddr);
 
     // update the GPIO state with the pin we wish to set
-    pca_bitWrite(gpio, pinToBit(pin), value);
+    writeBit(gpio, pinToBit(pin), value);
 
     // write the new GPIO state back out
     writeRegister(regAddr, gpio);
@@ -289,12 +282,12 @@ template <typename WIRE> class PCAL9535A {
 
     intf = readRegister(RegisterAddress::P0_INTSTAT);
     for (int i = 0; i < 8; i++) {
-      if (pca_bitRead(intf, i)) { return i; }
+      if (readBit(intf, i)) { return i; }
     }
 
     intf = readRegister(RegisterAddress::P1_INTSTAT);
     for (int i = 0; i < 8; i++) {
-      if (pca_bitRead(intf, i)) { return i + 8; }
+      if (readBit(intf, i)) { return i + 8; }
     }
 
     return PCAL9535A_INT_ERR;
@@ -319,7 +312,7 @@ template <typename WIRE> class PCAL9535A {
    */
   void portSetOutputMode(Port port, DriveMode mode) {
     uint8_t regValue = readRegister(RegisterAddress::OUTPUT_CONF);
-    pca_bitWrite(regValue, (port == Port::P0 ? 0 : 1), (static_cast<uint8_t>(mode) & 0x01));
+    writeBit(regValue, (port == Port::P0 ? 0 : 1), (static_cast<uint8_t>(mode) & 0x01));
     writeRegister(RegisterAddress::OUTPUT_CONF, regValue);
   }
 
@@ -386,17 +379,52 @@ template <typename WIRE> class PCAL9535A {
     uint8_t regValue              = readRegister(regAddr);
 
     // set the value for the particular bit
-    pca_bitWrite(regValue, pinToBit(pin), value);
+    writeBit(regValue, pinToBit(pin), value);
 
     writeRegister(regAddr, regValue);
+  }
+
+  /**
+   * Bit manipulation helpers (replacements for Arduino macros)
+   */
+
+  /**
+   * Read a single bit from a value
+   * \param value Value to read from
+   * \param bit Bit position (0-7)
+   * \return Bit value (0 or 1)
+   */
+  static inline uint8_t readBit(uint8_t value, uint8_t bit) { return (value >> bit) & 0x01; }
+
+  /**
+   * Set a single bit in a value to 1
+   * \param value Reference to value to modify
+   * \param bit Bit position (0-7)
+   */
+  static inline void setBit(uint8_t& value, uint8_t bit) { value |= (1U << bit); }
+
+  /**
+   * Clear a single bit in a value to 0
+   * \param value Reference to value to modify
+   * \param bit Bit position (0-7)
+   */
+  static inline void clearBit(uint8_t& value, uint8_t bit) { value &= ~(1U << bit); }
+
+  /**
+   * Write a single bit in a value to specified state
+   * \param value Reference to value to modify
+   * \param bit Bit position (0-7)
+   * \param bitvalue Value to write (0 or 1)
+   */
+  static inline void writeBit(uint8_t& value, uint8_t bit, uint8_t bitvalue) {
+    if (bitvalue) {
+      setBit(value, bit);
+    } else {
+      clearBit(value, bit);
+    }
   }
 };
 
 } // namespace PCAL9535A
-
-#undef pca_bitRead
-#undef pca_bitSet
-#undef pca_bitClear
-#undef pca_bitWrite
 
 #endif
