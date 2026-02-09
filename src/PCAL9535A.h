@@ -343,7 +343,7 @@ public:
   }
 
  private:
-  uint8_t _i2caddr;
+  uint8_t _i2caddr{PCAL9535A_ADDRESS};
   WIRE& mWire;
 
   /**
