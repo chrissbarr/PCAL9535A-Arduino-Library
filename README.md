@@ -23,14 +23,14 @@ The base feature set is described by the PCA9535. The more advanced variants (PC
 
 The following table shows several parts known to work with this library. All listed parts provide 16-bit GPIO (two 8-bit ports) with interrupts and polarity inversion support. The feature columns below show the additional capabilities of each part:
 
-| Part | Addresses | IRQ Masking | Drive Strength | Input Latch | Pull Resistors | Push-Pull | Open-Drain | Voltage Translating | Datasheet |
-|------|-----------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|-----------|
-| PCA9535 | 8 (0x20 - 0x27) | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCA9535_PCA9535C.pdf) |
-| PCA9535A | 8 (0x20 - 0x27) | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCA9535A.pdf) |
-| PCA9535C | 8 (0x20 - 0x27) | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCA9535_PCA9535C.pdf) |
-| PCAL9535A | 8 (0x20 - 0x27) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCAL9535A.pdf) |
-| PCA6416A | 2 (0x20 - 0x21) | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCA6416A.pdf) |
-| PCAL6416A | 2 (0x20 - 0x21) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCAL6416A.pdf) |
+| Part | Addresses | IRQ Masking | Drive Strength | Input Latch | Pull Resistors | Push-Pull | Open-Drain | Voltage Translating |
+|------|-----------|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| [PCA9535](https://www.nxp.com/docs/en/data-sheet/PCA9535_PCA9535C.pdf) | 8 (0x20 - 0x27) | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| [PCA9535A](https://www.nxp.com/docs/en/data-sheet/PCA9535A.pdf) | 8 (0x20 - 0x27) | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ❌ |
+| [PCA9535C](https://www.nxp.com/docs/en/data-sheet/PCA9535_PCA9535C.pdf) | 8 (0x20 - 0x27) | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| [PCAL9535A](https://www.nxp.com/docs/en/data-sheet/PCAL9535A.pdf) | 8 (0x20 - 0x27) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| [PCA6416A](https://www.nxp.com/docs/en/data-sheet/PCA6416A.pdf) | 2 (0x20 - 0x21) | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | ✅ |
+| [PCAL6416A](https://www.nxp.com/docs/en/data-sheet/PCAL6416A.pdf) | 2 (0x20 - 0x21) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 
 Note that other GPIO expanders not listed may be compatible. If you find a non-listed part that is compatible, let me know!
 
