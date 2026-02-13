@@ -21,16 +21,16 @@ The register set in the PCAL9535A is common to a range of I2C GPIO expanders fro
 
 The base feature set is described by the PCA9535. The more advanced variants (PCAL) include more configuration of the IO, such as programmable drive strength, pull-up/down resistors, and push-pull or open-drain outputs. The library supports the full feature set of the PCAL9535A. Parts with a reduced feature set are supported (but obviously those features won't work).
 
-The following table shows several parts known to work with this library. The feature set of these parts is summarised:
+The following table shows several parts known to work with this library. All listed parts provide 16-bit GPIO (two 8-bit ports) with interrupts and polarity inversion support. The feature columns below show the additional capabilities of each part:
 
-| Part | Bits | Addresses | Input | Output | Interrupt | Polarity Inv | Prg. Drive Strength | Latchable Inputs | Pull-Up/Down | Output Mode | Datasheet |
-|------|------|-----------|-------|--------|-----------|--------------|---------------------|------------------|--------------|-------------|-----------|
-| PCA9535 | 16 | 8 (0x20 - 0x27) | Yes | Yes | Yes | Yes | No | No | None | Push-Pull | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCA9535_PCA9535C.pdf) |
-| PCA9535A | 16 | 8 (0x20 - 0x27) | Yes | Yes | Yes | Yes | No | No | None | Push-Pull | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCA9535A.pdf) |
-| PCA9535C | 16 | 8 (0x20 - 0x27) | Yes | Yes | Yes | Yes | No | No | None | Open-Drain | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCA9535_PCA9535C.pdf) |
-| PCAL9535A | 16 | 8 (0x20 - 0x27) | Yes | Yes | Yes (maskable) | Yes | Yes | Yes | Programmable | Open-Drain / Push-Pull | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCAL9535A.pdf) |
-| PCA6416A | 16 | 2 (0x20 - 0x21) | Yes | Yes | Yes | Yes | No | No | None | Push-Pull | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCA6416A.pdf) |
-| PCAL6416A | 16 | 2 (0x20 - 0x21) | Yes | Yes | Yes (maskable) | Yes | Yes | Yes | Programmable | Open-Drain / Push-Pull | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCAL6416A.pdf) |
+| Part | Addresses | IRQ Masking | Drive Strength | Input Latch | Pull Resistors | Push-Pull | Open-Drain | Datasheet |
+|------|-----------|:---:|:---:|:---:|:---:|:---:|:---:|-----------|
+| PCA9535 | 8 (0x20 - 0x27) | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCA9535_PCA9535C.pdf) |
+| PCA9535A | 8 (0x20 - 0x27) | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCA9535A.pdf) |
+| PCA9535C | 8 (0x20 - 0x27) | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCA9535_PCA9535C.pdf) |
+| PCAL9535A | 8 (0x20 - 0x27) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCAL9535A.pdf) |
+| PCA6416A | 2 (0x20 - 0x21) | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCA6416A.pdf) |
+| PCAL6416A | 2 (0x20 - 0x21) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | [Datasheet](https://www.nxp.com/docs/en/data-sheet/PCAL6416A.pdf) |
 
 Note that other GPIO expanders not listed may be compatible. If you find a non-listed part that is compatible, let me know!
 
@@ -278,10 +278,14 @@ The library should work on any platform that supports the Arduino Wire library o
 
 ## Dependencies
 
-Any I2C/Wire library compatible with the Arduino Wire signature, including:
-- Arduino Wire library (included with Arduino IDE & most common Arduino-compatible platforms)
-- [AceWire](https://github.com/bxparks/AceWire) (bxparks/AceWire @ 0.4.1) - for software I2C support
-- [SoftwareWire](https://github.com/Testato/SoftwareWire) (testato/SoftwareWire @ 1.6.0) - alternative software I2C
+The library makes no assumptions about platform and does not include any platform-specific headers.
+
+The library class is a C++ template parameterized on the I2C interface type (`template <typename WIRE>`), so it works with any I2C implementation that provides the standard Arduino TwoWire API (`begin()`, `beginTransmission()`, `write()`, etc.).
+
+Known compatible libraries include:
+- Arduino Wire library (included with most Arduino-compatible platforms)
+- [AceWire](https://github.com/bxparks/AceWire) - for software I2C support
+- [SoftwareWire](https://github.com/Testato/SoftwareWire) - alternative software I2C
 - [teensy4_i2c](https://github.com/Richard-Gemmell/teensy4_i2c) - for using multiple I2C buses on Teensy 4.1
 
 ## Contributing
